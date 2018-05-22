@@ -1,7 +1,9 @@
+.PHONY: clean
+
 all: symal
 
 clean: 
-	rm -f *.o symal
+	$(RM) *.o symal
 
 cmd.o: cmd.c cmd.h
 	$(CC) -O3 -c -o cmd.o cmd.c
