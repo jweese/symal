@@ -332,7 +332,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   }
 
   if (isfinal) {
-    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++)
+    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++) {
       if (A[k->src][k->tgt]==1) {
         point.first=k->src;
         point.second=k->tgt;
@@ -351,8 +351,9 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
           //cout << "added final: " << point.second-1 << "-" << point.first-1 << "\n";
         }
       }
+    }
 
-    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++)
+    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++) {
       if (A[k->src][k->tgt]==-1) {
         point.first=k->src;
         point.second=k->tgt;
@@ -371,6 +372,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
           //cout << "added final: " << point.second-1 << "-" << point.first-1 << "\n";
         }
       }
+    }
   }
 
 
