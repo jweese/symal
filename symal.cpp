@@ -312,14 +312,13 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
         if (b[point.src] != point.tgt && a[point.tgt] != point.src) {
           continue;
         }
-        //check if it connects at least one uncovered word
-        if (!(ea[point.src] && fa[point.tgt])) {
-          //insert point in currentpoints!
-          added.emplace_back(point);
-          A[point.src][point.tgt]=2;
-          ea[point.src]=1;
-          fa[point.tgt]=1;
+        if (ea[point.src] && fa[point.tgt]) {
+          continue;
         }
+        added.emplace_back(point);
+        A[point.src][point.tgt]=2;
+        ea[point.src]=1;
+        fa[point.tgt]=1;
       }
     }
   }
