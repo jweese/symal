@@ -278,7 +278,6 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   std::set<Point> unionalignment; //union alignment
 
   pair <int,int> point; //variable to store points
-  set<pair <int,int> >::const_iterator k; //iterator over sets
 
   //fill in the alignments
   for (j=1; j<=m; j++) {
