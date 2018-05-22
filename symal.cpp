@@ -1,5 +1,6 @@
 // $Id$
 
+#include <array>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -231,16 +232,34 @@ struct Point {
   int src = 0;
   int tgt = 0;
 
-  Point() = default;
-  Point(int s, int t) : src(s), tgt(t) {}
+  constexpr Point() = default;
+  constexpr Point(int s, int t) : src(s), tgt(t) {}
 
-  bool operator==(Point p) const {
+  constexpr bool operator==(Point p) const {
     return src == p.src && tgt == p.tgt;
   }
 
-  bool operator<(Point p) const {
+  constexpr bool operator<(Point p) const {
     return src < p.src || (src == p.src && tgt < p.tgt);
   }
+};
+
+constexpr std::array<Point, 4> kSquareNeighbors = {
+  Point(-1,-0),
+  Point(0,-1),
+  Point(1,0),
+  Point(0,1)
+};
+
+constexpr std::array<Point, 8> kDiagonalNeighbors = {
+  Point(-1,-0),
+  Point(0,-1),
+  Point(1,0),
+  Point(0,1),
+  Point(-1,-1),
+  Point(-1,1),
+  Point(1,-1),
+  Point(1,1)
 };
 
 int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool isfinal=false,bool bothuncovered=false)
@@ -248,21 +267,13 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
   ostringstream sout;
 
-  std::vector<Point> neighbors;
-
-  neighbors.emplace_back(-1,-0);
-  neighbors.emplace_back(0,-1);
-  neighbors.emplace_back(1,0);
-  neighbors.emplace_back(0,1);
-
-
-  if (diagonal) {
-    neighbors.emplace_back(-1,-1);
-    neighbors.emplace_back(-1,1);
-    neighbors.emplace_back(1,-1);
-    neighbors.emplace_back(1,1);
-  }
-
+  const auto neighbors = [diagonal]() -> std::vector<Point> {
+    if (diagonal) {
+      return { kDiagonalNeighbors.begin(), kDiagonalNeighbors.end() };
+    } else {
+      return { kSquareNeighbors.begin(), kSquareNeighbors.end() };
+    }
+  }();
 
   int i,j;
 
