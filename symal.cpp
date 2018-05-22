@@ -231,6 +231,10 @@ struct Point {
   int src, tgt;
 
   Point(int s, int t) : src(s), tgt(t) {}
+
+  bool operator<(Point p) const {
+    return src < p.src || (src == p.src && tgt < p.tgt);
+  }
 };
 
 int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool isfinal=false,bool bothuncovered=false)
@@ -270,7 +274,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
   for (int i=1; i<=n; i++) memset(A[i],0,(m+1)*sizeof(int));
 
-  set <pair <int,int> > currentpoints; //symmetric alignment
+  std::set<Point> currentpoints; //symmetric alignment
   set <pair <int,int> > unionalignment; //union alignment
 
   pair <int,int> point; //variable to store points
@@ -284,7 +288,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
         fa[j]=1;
         ea[a[j]]=1;
         A[a[j]][j]=2;
-        currentpoints.insert(make_pair(a[j],j));
+        currentpoints.emplace(a[j],j);
       } else
         A[a[j]][j]=-1;
     }
@@ -302,12 +306,12 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   while (added) {
     added=0;
     ///scan the current alignment
-    for (k=currentpoints.begin(); k!=currentpoints.end(); k++) {
+    for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++) {
       //cout << "{"<< (k->second)-1 << "-" << (k->first)-1 << "}";
       for (o=0; o<neighbors.size(); o++) {
         //cout << "go over check all neighbors\n";
-        point.first=k->first+neighbors[o].src;
-        point.second=k->second+neighbors[o].tgt;
+        point.first=k->src + neighbors[o].src;
+        point.second=k->tgt + neighbors[o].tgt;
         //cout << point.second-1 << " " << point.first-1 << "\n";
         //check if neighbor is inside 'matrix'
         if (point.first>0 && point.first <=n && point.second>0 && point.second<=m)
@@ -317,7 +321,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
             //check if it connects at least one uncovered word
             if (!(ea[point.first] && fa[point.second])) {
               //insert point in currentpoints!
-              currentpoints.insert(point);
+              currentpoints.insert(Point(point.first, point.second));
               A[point.first][point.second]=2;
               ea[point.first]=1;
               fa[point.second]=1;
@@ -339,7 +343,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
         if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
             (!bothuncovered && !(ea[point.first] && fa[point.second]))) {
           //add it!
-          currentpoints.insert(point);
+          currentpoints.insert(Point(point.first, point.second));
           A[point.first][point.second]=2;
           //keep track of new covered positions
           ea[point.first]=1;
@@ -359,7 +363,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
         if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
             (!bothuncovered && !(ea[point.first] && fa[point.second]))) {
           //add it!
-          currentpoints.insert(point);
+          currentpoints.insert(Point(point.first, point.second));
           A[point.first][point.second]=2;
           //keep track of new covered positions
           ea[point.first]=1;
@@ -372,8 +376,8 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   }
 
 
-  for (k=currentpoints.begin(); k!=currentpoints.end(); k++)
-    sout << k->second-1 << "-" << k->first-1 << " ";
+  for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++)
+    sout << k->tgt-1 << "-" << k->src-1 << " ";
 
 
   //fix the last " "
