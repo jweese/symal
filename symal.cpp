@@ -151,7 +151,7 @@ int prunionalignment(ostream& out,int m,int *a,int n,int* b)
 
 //Compute intersection alignment
 
-int printersect(ostream& out,int m,int *a,int n,int* b)
+int printersect(ostream& out,int m,int *a,int,int* b)
 {
 
   ostringstream sout;
@@ -175,7 +175,7 @@ int printersect(ostream& out,int m,int *a,int n,int* b)
 
 //Compute target-to-source alignment
 
-int printtgttosrc(ostream& out,int m,int *a,int n,int* b)
+int printtgttosrc(ostream& out,int ,int *,int n,int* b)
 {
 
   ostringstream sout;
@@ -199,7 +199,7 @@ int printtgttosrc(ostream& out,int m,int *a,int n,int* b)
 
 //Compute source-to-target alignment
 
-int printsrctotgt(ostream& out,int m,int *a,int n,int* b)
+int printsrctotgt(ostream& out,int m,int *a,int ,int*)
 {
 
   ostringstream sout;
