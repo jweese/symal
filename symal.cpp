@@ -234,6 +234,10 @@ struct Point {
   Point() = default;
   Point(int s, int t) : src(s), tgt(t) {}
 
+  bool operator==(Point p) const {
+    return src == p.src && tgt == p.tgt;
+  }
+
   bool operator<(Point p) const {
     return src < p.src || (src == p.src && tgt < p.tgt);
   }
@@ -274,12 +278,12 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   for (int i=1; i<=n; i++) memset(A[i],0,(m+1)*sizeof(int));
 
   std::set<Point> currentpoints; //symmetric alignment
-  std::set<Point> unionalignment; //union alignment
+  std::vector<Point> unionalignment; //union alignment
 
   //fill in the alignments
   for (j=1; j<=m; j++) {
     if (a[j]) {
-      unionalignment.emplace(a[j],j);
+      unionalignment.emplace_back(a[j],j);
       if (b[a[j]]==j) {
         fa[j]=1;
         ea[a[j]]=1;
@@ -292,10 +296,13 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
   for (i=1; i<=n; i++)
     if (b[i] && a[b[i]]!=i) { //not intersection
-      unionalignment.emplace(i,b[i]);
+      unionalignment.emplace_back(i,b[i]);
       A[i][b[i]]=1;
     }
 
+  std::sort(unionalignment.begin(), unionalignment.end());
+  auto it = std::unique(unionalignment.begin(), unionalignment.end());
+  unionalignment.erase(it, unionalignment.end());
 
   for (std::vector<Point> added(1);
       !added.empty();
