@@ -353,10 +353,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
       }
     }
 
-    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++) {
-      if (A[k->src][k->tgt]==-1) {
-        point.first=k->src;
-        point.second=k->tgt;
+    for (auto [src, tgt] : unionalignment) {
+      if (A[src][tgt]==-1) {
+        point.first= src;
+        point.second= tgt;
         //one of the two words is not covered yet
         //cout << "{" << point.second-1 << "-" << point.first-1 << "} ";
         if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
