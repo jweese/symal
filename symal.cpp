@@ -337,34 +337,28 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     for (auto [src, tgt] : unionalignment) {
       if (A[src][tgt]==1) {
         //one of the two words is not covered yet
-        if ((bothuncovered &&  !ea[src] && !fa[tgt]) ||
-            (!bothuncovered && !(ea[src] && fa[tgt]))) {
-          //add it!
-          currentpoints.insert(Point(src, tgt));
-          A[src][tgt]=2;
-          //keep track of new covered positions
-          ea[src]=1;
-          fa[tgt]=1;
-
-          //added=1;
+        if (bothuncovered ^ (ea[src] || fa[tgt])) {
+          continue;
         }
+        currentpoints.insert(Point(src, tgt));
+        A[src][tgt]=2;
+        //keep track of new covered positions
+        ea[src]=1;
+        fa[tgt]=1;
       }
     }
 
     for (auto [src, tgt] : unionalignment) {
       if (A[src][tgt]==-1) {
         //one of the two words is not covered yet
-        if ((bothuncovered &&  !ea[src] && !fa[tgt]) ||
-            (!bothuncovered && !(ea[src] && fa[tgt]))) {
-          //add it!
-          currentpoints.insert(Point(src, tgt));
-          A[src][tgt]=2;
-          //keep track of new covered positions
-          ea[src]=1;
-          fa[tgt]=1;
-
-          //added=1;
+        if (bothuncovered ^ (ea[src] || fa[tgt])) {
+          continue;
         }
+        currentpoints.insert(Point(src, tgt));
+        A[src][tgt]=2;
+        //keep track of new covered positions
+        ea[src]=1;
+        fa[tgt]=1;
       }
     }
   }
