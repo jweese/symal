@@ -227,26 +227,32 @@ int printsrctotgt(ostream& out,int m,int *a,int ,int*)
 //to represent the grow alignment as the unionalignment of a
 //directed and inverted alignment
 
+struct Point {
+  int src, tgt;
+
+  Point(int s, int t) : src(s), tgt(t) {}
+};
+
 int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool isfinal=false,bool bothuncovered=false)
 {
 
   ostringstream sout;
 
-  vector <pair <int,int> > neighbors; //neighbors
+  std::vector<Point> neighbors;
 
   pair <int,int> entry;
 
-  neighbors.push_back(make_pair(-1,-0));
-  neighbors.push_back(make_pair(0,-1));
-  neighbors.push_back(make_pair(1,0));
-  neighbors.push_back(make_pair(0,1));
+  neighbors.emplace_back(-1,-0);
+  neighbors.emplace_back(0,-1);
+  neighbors.emplace_back(1,0);
+  neighbors.emplace_back(0,1);
 
 
   if (diagonal) {
-    neighbors.push_back(make_pair(-1,-1));
-    neighbors.push_back(make_pair(-1,1));
-    neighbors.push_back(make_pair(1,-1));
-    neighbors.push_back(make_pair(1,1));
+    neighbors.emplace_back(-1,-1);
+    neighbors.emplace_back(-1,1);
+    neighbors.emplace_back(1,-1);
+    neighbors.emplace_back(1,1);
   }
 
 
@@ -300,8 +306,8 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
       //cout << "{"<< (k->second)-1 << "-" << (k->first)-1 << "}";
       for (o=0; o<neighbors.size(); o++) {
         //cout << "go over check all neighbors\n";
-        point.first=k->first+neighbors[o].first;
-        point.second=k->second+neighbors[o].second;
+        point.first=k->first+neighbors[o].src;
+        point.second=k->second+neighbors[o].tgt;
         //cout << point.second-1 << " " << point.first-1 << "\n";
         //check if neighbor is inside 'matrix'
         if (point.first>0 && point.first <=n && point.second>0 && point.second<=m)
