@@ -228,8 +228,10 @@ int printsrctotgt(ostream& out,int m,int *a,int ,int*)
 //directed and inverted alignment
 
 struct Point {
-  int src, tgt;
+  int src = 0;
+  int tgt = 0;
 
+  Point() = default;
   Point(int s, int t) : src(s), tgt(t) {}
 
   bool operator<(Point p) const {
@@ -299,10 +301,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     }
 
 
-  int added=1;
-
-  while (added) {
-    added=0;
+  for (std::vector<Point> added(1);
+      !added.empty();
+      currentpoints.insert(added.begin(), added.end())) {
+    added.clear();
     ///scan the current alignment
     for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++) {
       //cout << "{"<< (k->second)-1 << "-" << (k->first)-1 << "}";
@@ -319,11 +321,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
             //check if it connects at least one uncovered word
             if (!(ea[point.first] && fa[point.second])) {
               //insert point in currentpoints!
-              currentpoints.insert(Point(point.first, point.second));
+              added.emplace_back(point.first, point.second);
               A[point.first][point.second]=2;
               ea[point.first]=1;
               fa[point.second]=1;
-              added=1;
               //cout << "added grow: " << point.second-1 << "-" << point.first-1 << "\n";cout.flush();
             }
           }
