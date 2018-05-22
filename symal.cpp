@@ -246,8 +246,6 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
   std::vector<Point> neighbors;
 
-  pair <int,int> entry;
-
   neighbors.emplace_back(-1,-0);
   neighbors.emplace_back(0,-1);
   neighbors.emplace_back(1,0);
