@@ -261,7 +261,6 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
 
   int i,j;
-  size_t o;
 
 
   //covered foreign and english positions
@@ -307,10 +306,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     ///scan the current alignment
     for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++) {
       //cout << "{"<< (k->second)-1 << "-" << (k->first)-1 << "}";
-      for (o=0; o<neighbors.size(); o++) {
+      for (auto neighbor : neighbors) {
         //cout << "go over check all neighbors\n";
-        point.first=k->src + neighbors[o].src;
-        point.second=k->tgt + neighbors[o].tgt;
+        point.first=k->src + neighbor.src;
+        point.second=k->tgt + neighbor.tgt;
         //cout << point.second-1 << " " << point.first-1 << "\n";
         //check if neighbor is inside 'matrix'
         if (point.first>0 && point.first <=n && point.second>0 && point.second<=m)
