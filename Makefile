@@ -1,6 +1,6 @@
 common_flags = -O3
-CFLAGS = $(common_flags)
-CXXFLAGS = $(common_flags)
+CFLAGS = $(common_flags) -std=c11
+CXXFLAGS = $(common_flags) -std=c++17
 
 .PHONY: clean
 
