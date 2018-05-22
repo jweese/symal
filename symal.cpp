@@ -17,9 +17,9 @@
 
 using namespace std;
 
-const int MAX_WORD = 10000;  // maximum lengthsource/target strings
-const int MAX_M = 400;       // maximum length of source strings
-const int MAX_N = 400;       // maximum length of target strings
+constexpr int MAX_WORD = 10000;  // maximum lengthsource/target strings
+constexpr int MAX_M = 400;       // maximum length of source strings
+constexpr int MAX_N = 400;       // maximum length of target strings
 
 enum Alignment {
   UNION = 1,
@@ -59,9 +59,9 @@ Enum_T BoolEnum [] = {
 
 // global variables and constants
 
-int* fa; //counters of covered foreign positions
-int* ea; //counters of covered english positions
-int** A; //alignment matrix with information symmetric/direct/inverse alignments
+std::array<int, MAX_M + 1> fa{}; //counters of covered foreign positions
+std::array<int, MAX_N + 1> ea{}; //counters of covered english positions
+std::array<std::array<int, MAX_M + 1>, MAX_N + 1> A{};
 
 int verbose=0;
 
@@ -279,14 +279,14 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
 
   //covered foreign and english positions
-
-  memset(fa,0,(m+1)*sizeof(int));
-  memset(ea,0,(n+1)*sizeof(int));
+  fa.fill(0);
+  ea.fill(0);
 
   //matrix to quickly check if one point is in the symmetric
   //alignment (value=2), direct alignment (=1) and inverse alignment
-
-  for (int i=1; i<=n; i++) memset(A[i],0,(m+1)*sizeof(int));
+  for (auto& row : A) {
+    row.fill(0);
+  }
 
   std::set<Point> currentpoints; //symmetric alignment
   std::vector<Point> unionalignment; //union alignment
@@ -452,13 +452,8 @@ int main(int argc, char** argv)
     }
 
     int a[MAX_M],b[MAX_N],m,n;
-    fa=new int[MAX_M+1];
-    ea=new int[MAX_N+1];
-
 
     int sents = 0;
-    A=new int *[MAX_N+1];
-    for (int i=1; i<=MAX_N; i++) A[i]=new int[MAX_M+1];
 
     switch (alignment) {
     case UNION:
@@ -507,11 +502,6 @@ int main(int argc, char** argv)
     default:
       throw runtime_error("Unknown alignment");
     }
-
-    delete [] fa;
-    delete [] ea;
-    for (int i=1; i<=MAX_N; i++) delete [] A[i];
-    delete [] A;
 
     if (inp != &std::cin) {
       delete inp;
