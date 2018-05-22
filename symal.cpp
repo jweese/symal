@@ -264,9 +264,6 @@ constexpr std::array<Point, 8> kDiagonalNeighbors = {
 
 int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool isfinal=false,bool bothuncovered=false)
 {
-
-  ostringstream sout;
-
   const auto neighbors = [diagonal]() -> std::vector<Point> {
     if (diagonal) {
       return { kDiagonalNeighbors.begin(), kDiagonalNeighbors.end() };
@@ -274,9 +271,6 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
       return { kSquareNeighbors.begin(), kSquareNeighbors.end() };
     }
   }();
-
-  int i,j;
-
 
   //covered foreign and english positions
   fa.fill(0);
@@ -292,7 +286,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   std::vector<Point> unionalignment; //union alignment
 
   //fill in the alignments
-  for (j=1; j<=m; j++) {
+  for (int j=1; j<=m; j++) {
     if (a[j]) {
       unionalignment.emplace_back(a[j],j);
       if (b[a[j]]==j) {
@@ -305,7 +299,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     }
   }
 
-  for (i=1; i<=n; i++)
+  for (int i=1; i<=n; i++)
     if (b[i] && a[b[i]]!=i) { //not intersection
       unionalignment.emplace_back(i,b[i]);
       A[i][b[i]]=1;
@@ -376,6 +370,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   }
 
 
+  std::ostringstream sout;
   for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++)
     sout << k->tgt-1 << "-" << k->src-1 << " ";
 
