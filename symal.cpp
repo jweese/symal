@@ -355,21 +355,17 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
     for (auto [src, tgt] : unionalignment) {
       if (A[src][tgt]==-1) {
-        point.first= src;
-        point.second= tgt;
         //one of the two words is not covered yet
-        //cout << "{" << point.second-1 << "-" << point.first-1 << "} ";
-        if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
-            (!bothuncovered && !(ea[point.first] && fa[point.second]))) {
+        if ((bothuncovered &&  !ea[src] && !fa[tgt]) ||
+            (!bothuncovered && !(ea[src] && fa[tgt]))) {
           //add it!
-          currentpoints.insert(Point(point.first, point.second));
-          A[point.first][point.second]=2;
+          currentpoints.insert(Point(src, tgt));
+          A[src][tgt]=2;
           //keep track of new covered positions
-          ea[point.first]=1;
-          fa[point.second]=1;
+          ea[src]=1;
+          fa[tgt]=1;
 
           //added=1;
-          //cout << "added final: " << point.second-1 << "-" << point.first-1 << "\n";
         }
       }
     }
