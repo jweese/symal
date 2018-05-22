@@ -306,18 +306,18 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     for (auto [src, tgt] : currentpoints) {
       for (auto neighbor : neighbors) {
         Point point(src + neighbor.src, tgt + neighbor.tgt);
-        //check if neighbor is inside 'matrix'
-        if (point.src > 0 && point.src <= n && point.tgt >0 && point.tgt <= m) {
-          //check if neighbor is in the unionalignment alignment
-          if (b[point.src] == point.tgt || a[point.tgt] == point.src) {
-            //check if it connects at least one uncovered word
-            if (!(ea[point.src] && fa[point.tgt])) {
-              //insert point in currentpoints!
-              added.emplace_back(point);
-              A[point.src][point.tgt]=2;
-              ea[point.src]=1;
-              fa[point.tgt]=1;
-            }
+        if (point.src <= 0 || point.src > n || point.tgt <=0 || point.tgt > m) {
+          continue;
+        }
+        //check if neighbor is in the unionalignment alignment
+        if (b[point.src] == point.tgt || a[point.tgt] == point.src) {
+          //check if it connects at least one uncovered word
+          if (!(ea[point.src] && fa[point.tgt])) {
+            //insert point in currentpoints!
+            added.emplace_back(point);
+            A[point.src][point.tgt]=2;
+            ea[point.src]=1;
+            fa[point.tgt]=1;
           }
         }
       }
