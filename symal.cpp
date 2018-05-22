@@ -275,7 +275,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   for (int i=1; i<=n; i++) memset(A[i],0,(m+1)*sizeof(int));
 
   std::set<Point> currentpoints; //symmetric alignment
-  set <pair <int,int> > unionalignment; //union alignment
+  std::set<Point> unionalignment; //union alignment
 
   pair <int,int> point; //variable to store points
   set<pair <int,int> >::const_iterator k; //iterator over sets
@@ -283,7 +283,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   //fill in the alignments
   for (j=1; j<=m; j++) {
     if (a[j]) {
-      unionalignment.insert(make_pair(a[j],j));
+      unionalignment.emplace(a[j],j);
       if (b[a[j]]==j) {
         fa[j]=1;
         ea[a[j]]=1;
@@ -296,7 +296,7 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
 
   for (i=1; i<=n; i++)
     if (b[i] && a[b[i]]!=i) { //not intersection
-      unionalignment.insert(make_pair(i,b[i]));
+      unionalignment.emplace(i,b[i]);
       A[i][b[i]]=1;
     }
 
@@ -334,10 +334,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   }
 
   if (isfinal) {
-    for (k=unionalignment.begin(); k!=unionalignment.end(); k++)
-      if (A[k->first][k->second]==1) {
-        point.first=k->first;
-        point.second=k->second;
+    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++)
+      if (A[k->src][k->tgt]==1) {
+        point.first=k->src;
+        point.second=k->tgt;
         //one of the two words is not covered yet
         //cout << "{" << point.second-1 << "-" << point.first-1 << "} ";
         if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
@@ -354,10 +354,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
         }
       }
 
-    for (k=unionalignment.begin(); k!=unionalignment.end(); k++)
-      if (A[k->first][k->second]==-1) {
-        point.first=k->first;
-        point.second=k->second;
+    for (auto k=unionalignment.begin(); k!=unionalignment.end(); k++)
+      if (A[k->src][k->tgt]==-1) {
+        point.first=k->src;
+        point.second=k->tgt;
         //one of the two words is not covered yet
         //cout << "{" << point.second-1 << "-" << point.first-1 << "} ";
         if ((bothuncovered &&  !ea[point.first] && !fa[point.second]) ||
