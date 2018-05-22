@@ -278,8 +278,6 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
   std::set<Point> currentpoints; //symmetric alignment
   std::set<Point> unionalignment; //union alignment
 
-  pair <int,int> point; //variable to store points
-
   //fill in the alignments
   for (j=1; j<=m; j++) {
     if (a[j]) {
@@ -307,24 +305,21 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     added.clear();
     for (auto [src, tgt] : currentpoints) {
       for (auto neighbor : neighbors) {
-        point.first= src + neighbor.src;
-        point.second= tgt + neighbor.tgt;
-        //cout << point.second-1 << " " << point.first-1 << "\n";
+        Point point(src + neighbor.src, tgt + neighbor.tgt);
         //check if neighbor is inside 'matrix'
-        if (point.first>0 && point.first <=n && point.second>0 && point.second<=m)
+        if (point.src > 0 && point.src <= n && point.tgt >0 && point.tgt <= m) {
           //check if neighbor is in the unionalignment alignment
-          if (b[point.first]==point.second || a[point.second]==point.first) {
-            //cout << "In unionalignment ";cout.flush();
+          if (b[point.src] == point.tgt || a[point.tgt] == point.src) {
             //check if it connects at least one uncovered word
-            if (!(ea[point.first] && fa[point.second])) {
+            if (!(ea[point.src] && fa[point.tgt])) {
               //insert point in currentpoints!
-              added.emplace_back(point.first, point.second);
-              A[point.first][point.second]=2;
-              ea[point.first]=1;
-              fa[point.second]=1;
-              //cout << "added grow: " << point.second-1 << "-" << point.first-1 << "\n";cout.flush();
+              added.emplace_back(point);
+              A[point.src][point.tgt]=2;
+              ea[point.src]=1;
+              fa[point.tgt]=1;
             }
           }
+        }
       }
     }
   }
