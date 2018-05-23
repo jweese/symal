@@ -363,11 +363,10 @@ int printgrow(ostream& out,int m,int *a,int n,int* b, bool diagonal=false,bool i
     }
   }
 
-
   std::ostringstream sout;
-  for (auto k=currentpoints.begin(); k!=currentpoints.end(); k++)
-    sout << k->tgt-1 << "-" << k->src-1 << " ";
-
+  for (auto [src, tgt] : currentpoints) {
+    sout << tgt-1 << "-" << src-1 << " ";
+  }
 
   //fix the last " "
   string str = sout.str();
