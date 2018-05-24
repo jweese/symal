@@ -1,18 +1,17 @@
-// $Id$
-
+#include <algorithm>
 #include <array>
 #include <cassert>
+#include <cstring>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <fstream>
+#include <list>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <list>
 #include <vector>
-#include <set>
-#include <algorithm>
-#include <cstring>
+
 #include "cmd.h"
 
 using namespace std;
