@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <list>
 #include <set>
 #include <sstream>
 #include <stdexcept>
