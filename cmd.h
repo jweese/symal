@@ -1,9 +1,4 @@
-
-// $Id$
-
-#if !defined(CMD_H)
-
-#define	CMD_H
+#pragma once
 
 enum CommandType {
   CMDDOUBLETYPE = 1,
@@ -31,5 +26,4 @@ extern "C" {
 
 #ifdef  __cplusplus
 }
-#endif
 #endif
